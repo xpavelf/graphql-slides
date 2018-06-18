@@ -1,0 +1,283 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>GraphQL</title>
+
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/black.css">
+
+		<!-- Theme used for syntax highlighting of code -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+		<style>
+			.reveal section img {
+			  border: none; box-shadow: none; background: none;
+			}
+
+			.reveal section h1, .reveal section h2 {
+				text-transform: none;
+			}
+
+			.sw-row {
+				display: flex;
+			}
+
+			.sw-col {
+				flex-basis: 48%;
+			}
+		  </style>
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+				<section>
+					<img
+					  src="./imgs/graphql-logo.svg"
+					  style="width: 30%">
+					<h1>GraphQL</h1>
+				  </section>
+		  
+				  <section>
+					<img 
+					  src="./imgs/gh-logo.png"
+					  style="height: 1em; vertical-align: middle"
+					  > / xpavelf
+					<br>
+					<img 
+					  src="./imgs/solarwinds-logo.png"
+					  style="height: 5em;">
+				  </section>
+		  
+				  <section>
+					    <h2>So what is Graph<span class="fragment highlight-green">QL</span>?</h2>
+				</section>
+				<section>
+					<h2>Query language</h2>
+					"A specialized language for requesting information from a data resource."
+					  <aside class="notes">
+						  by creating graphql, fb was trying to retrieve data in more natural manner
+
+						  + Another query language?? -> SQL
+						  + SQL we think of data in tables and joins so that is also how we construct our queries
+						  + GraphQL we think in terms of nodes and connection among them
+					  </aside>
+				  </section>
+				  <section>
+					    <h2>GraphQL</h2>
+					    <p class="fragment">query language created by Facebook in 2012</p>
+						<p class="fragment">developing as a open standard since 2015</p>
+				</section>
+				<section>
+					<pre>
+
+
+						
+<span style="color:greenyellow">=================						
+     BROWSER
+=================</span>
+
+       html
+
+<span style="color:burlywood">=================						
+    APP SERVER
+=================</span>
+
+<span style="color:lightcoral">=================
+  DATA SERVICES
+=================</span>
+					</pre>
+				</section>
+				  <section>
+						<pre><code>[GET] http://mydomain.com/users</code></pre>
+						
+						<table>
+							<thead>
+								<tr>
+									<th>id</th>
+									<th>firstname</th>
+									<th>lastname</th>
+									<th>...</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr><td>1</td><td>Lady</td><td>Gaga</td><td></td></tr>
+								<tr><td>2</td><td>Jozin</td><td>Z Bazin</td><td></td></tr>
+								<tr><td>3</td><td>Elon</td><td>Musk</td><td></td></tr>
+							</tbody>
+						</table>
+						<aside class="notes">
+							The approach doesn't represent data in the same way we think about data. We don't think about data in terms of tables and joins
+						</aside>
+						</section>
+	
+					  <section>
+						  <svg viewbox="0 0 100 100">
+							<circle cx="20" cy="20" r="10" fill="#E10098" />
+							<text x="14" y="22" font-size="6" fill="white">user</text>
+	
+							<g class="fragment">
+								<line x1="27" y1="19" x2="70" y2="15" stroke="#E10098"/>
+								<circle cx="70" cy="15" r="10" fill="#E10098" />
+								<text x="61" y="17" font-size="6" fill="white">[books]</text>
+							</g>
+	
+							<g class="fragment">
+								<line x1="70" y1="18" x2="60" y2="45" stroke="#E10098"/>
+								<circle cx="60" cy="45" r="10" fill="#E10098" />
+								<text x="52" y="47" font-size="6" fill="white">author</text>
+							</g>
+						  </svg>
+					  </section>
+
+				  <section>
+						<div class="sw-row">
+	
+							<div class="sw-col">
+								Request
+								<pre><code data-trim data-noescape style="line-height: 120%; font-size:60%">
+								{
+								  me {
+								    nickname
+								  }
+								}
+								</code></pre>
+							</div>
+							<div class="sw-col fragment">
+								Response
+								<pre><code data-trim data-noescape style="line-height: 120%; font-size:60%">
+								{
+								  "me" {
+								    "nickname": "pikachu"
+								  }
+								}
+								</code></pre>
+							</div>
+						</div>
+						<aside class="notes">
+							+ json like format<br>
+							+ fields, nested fields<br>
+
+							+ Easy to know what the response structure gonna be<br>
+							+ no overfetching - we have to specify what data we want - no asterisk<br>
+
+							+ graph has no starting point<br>
+							+ top level fields are entrypoins to access the graph<br>
+						</aside>
+					  </section>
+
+					 <section>
+		
+						<pre class="sw-col"><code data-trim data-noescape style="line-height: 120%; font-size:60%">
+						type User {
+						 id: ID!
+						  name: String!
+						  nickname: String
+						  age: Int
+						  books: [Book]
+						}
+
+						type Book {
+						  id: ID!
+						  title: String
+						  author: Author
+						  pages: Int
+						}
+
+						type Author {
+						  id: ID!
+						  name: String!
+						  books: [Book]
+						}
+
+						type Query {
+						  user(nickname: String!): User
+						  me: User
+						}
+						</code></pre>
+
+					</section>
+					<section>
+						<div class="sw-row">
+						<pre class="sw-col"><code data-trim data-noescape>
+						{
+						  <span class="fragment highlight-current-red">user</span>(nickname: "pikachu") {
+						    name
+						    age
+						    <span class="fragment highlight-current-red">books</span> {
+						      title
+						      <span class="fragment highlight-current-red">author</span> {
+						        name
+						      }
+						    }
+						  }
+						}
+						</code></pre>
+						<pre class="sw-col"><code data-trim data-noescape>
+{
+  <span class="fragment highlight-current-red">"user":</span> {
+  "name": "Jozin z Bazin"
+  "age": 27
+  <span class="fragment highlight-current-red">"books":</span> [
+    {
+      "title": ""
+		<span class="fragment highlight-current-red">"author":</span> {
+			"name"
+		}
+	}
+  }
+}
+						</code></pre>
+						</div>
+
+				  </section>
+				  <section>
+						<pre><code>[GET] http://mydomain.com/users?nickname=pikachu</code></pre>
+						<pre class="fragment"><code>[GET] http://mydomain.com/books/?user=2</code></pre>
+						<pre class="fragment"><code>[GET] http://mydomain.com/author/2</code></pre>
+						<br>
+						<pre class="fragment"><code>[GET] http://mydomain.com/books_with_author/?user=2</code></pre>
+						<pre class="fragment" style="font-size: 45%"><code>[GET] http://mydomain.com/books_with_author_and_bookcover/?user=2</code></pre>
+						<pre class="fragment" style="font-size: 35%"><code>[GET] http://mydomain.com/books_with_author_and_bookcover_and_author_photography/?user=2</code></pre>
+						<aside class="notes">
+							The approach doesn't represent data in the same way we think about data. We don't think about data in terms of tables and joins
+						</aside>
+						</section>
+				  <section>
+					
+				  </section>
+				 
+
+			</div>
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.js"></script>
+
+		<script>
+			// More info about config & dependencies:
+			// - https://github.com/hakimel/reveal.js#configuration
+			// - https://github.com/hakimel/reveal.js#dependencies
+			Reveal.initialize({
+				history: true,
+				dependencies: [
+					{ src: 'plugin/markdown/marked.js' },
+					{ src: 'plugin/markdown/markdown.js' },
+					{ src: 'plugin/notes/notes.js', async: true },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }
+				]
+			});
+		</script>
+	</body>
+</html>

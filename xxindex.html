@@ -1,0 +1,60 @@
+<html>
+  <head>
+    <title>GraphQL</title>
+    <link rel="stylesheet" href="./lib/reveal/reveal.min.css">
+    <link rel="stylesheet" href="./lib/reveal/black.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/zenburn.min.css">
+    <style>
+      .reveal section img {
+        border: none; box-shadow: none; background: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="reveal">
+      <div class="slides">
+        <section>
+          <img
+            src="./imgs/graphql-logo.svg"
+            style="width: 30%">
+          <h1 style="text-transform: none">GraphQL</h1>
+        </section>
+
+        <section>
+          <img 
+            src="./imgs/gh-logo.png"
+            style="height: 1em; vertical-align: middle"
+            > / xpavelf
+          <br>
+          <img 
+            src="./imgs/solarwinds-logo.png"
+            style="height: 5em;">
+        </section>
+
+        <section>
+          <h2>Rest</h2>
+          The approach doesn't represent data in the same way we think about data. We don't think about data in terms of tables and joins
+        </section>
+        <section>
+          <pre><code data-trim data-noescape>
+        (def lazy-fib
+          (concat
+           [0 1]
+           <mark>((fn rfib [a b]</mark>
+                (lazy-cons (+ a b) (rfib b (+ a b)))) 0 1)))
+          </code></pre>
+        </section>
+      </div>
+    </div>
+
+    <script src="./lib/reveal/reveal.min.js"></script>
+    <script>
+      Reveal.initialize({
+        history: true,
+        dependencies: [
+          { src: 'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+        ]
+      });
+    </script>
+  </body>
+</html>
