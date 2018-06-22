@@ -61,6 +61,87 @@
 				  </section>
 		  
 				  <section>
+					  <h2>Rest API</h2>
+				  </section>
+				  <section>
+					  <pre><code>[GET] http://mydomain.com/users</code></pre>
+						<pre><code data-trim>							
+							[{
+								"id": 1,
+								"firstname": "Lady",
+								"lastname": "Gaga",
+								"loans": "http://mydomain.com/users/1/loans",
+								...
+							}, {
+								"id": 2,
+								"firstname": "Jozin",
+								"lastname": "Z Bazin",
+								"loans": "http://mydomain.com/users/2/loans",
+								...
+							}, ...]
+						</code></pre>
+					</section>
+						<section>
+								<pre><code>[GET] http://mydomain.com/users/2/loans</code></pre>
+								  <pre><code data-trim>							
+									  [{
+										  "id": 10,
+										  "date": "3/3/2017",
+										  "returndate": "3/4/2017",
+										  "book": "http://mydomain.com/books/56",
+										  ...
+									  }, {
+										  "id": 12,
+										  "date": "5/5/2018",
+										  "returndate": "",
+										  "book": "http://mydomain.com/books/233",
+										  ...
+									  }, ...]
+								  </code></pre>
+								  
+								  <aside class="notes">
+									  The approach doesn't represent data in the same way we think about data. We don't think about data in terms of tables and joins
+								  </aside>
+								  </section>	
+					
+						
+						<section>
+								<pre><code>[GET] http://mydomain.com/books/56</code></pre>
+								  <pre><code data-trim>							
+									  {
+										  "id": 56,
+										  "title": "The Theory of Everything: The Origin and Fate of the Universe",
+										  "pages": 564,
+										  "author": "http://mydomain.com/authors/666",
+										  "cover": "http://mydomain.com/imgs/cover56.jpeg",
+										  ...
+									  }
+								  </code></pre>
+								  
+								  </section>
+								  <section>
+									  <h2>Any concerns?</h2>
+								  </section>
+						<section>
+							<ul>
+								<li>How many times we hit the server?</li>
+								<li class="fragment">Think of all code handling the requests in client</li>
+								<li class="fragment">Overfetching</li>
+							</ul>
+						</section>
+						<section>
+							<h2>Rest is optimized for servers, not for clients</h2>
+						</section>
+						<section>
+							<pre><code>[GET] http://mydomain.com/books_with_comments/?book=1</code></pre>
+							<pre class="fragment" style="font-size: 45%"><code>[GET] http://mydomain.com/books_with_comments_and_bookcover/?book=1</code></pre>
+							<pre class="fragment" style="font-size: 35%"><code>[GET] http://mydomain.com/books_with_comments_and_bookcover_and_author_photography/?book=1</code></pre>
+							<aside class="notes">
+								Server is defining the model of what we get.
+							</aside>
+						</section>
+							
+				  <section>
 					    <h2>So what is Graph<span class="fragment highlight-green">QL</span>?</h2>
 				</section>
 				<section>
@@ -75,53 +156,48 @@
 					  </aside>
 				  </section>
 				  <section>
+					  <h2>GraphQL is NOT a storage engine!</h2>
+				  </section>
+				  <section>
 					    <h2>GraphQL</h2>
 					    <p class="fragment">query language created by Facebook in 2012</p>
 						<p class="fragment">developing as a open standard since 2015</p>
 				</section>
 				<section>
-					<pre>
-
-
-						
-<span style="color:greenyellow">=================						
+					<div class="sw-row">
+<pre class="sw-col">
+<span style="color:greenyellow">=================
      BROWSER
 =================</span>
 
        html
 
-<span style="color:burlywood">=================						
+<span style="color:burlywood">=================
     APP SERVER
 =================</span>
 
 <span style="color:lightcoral">=================
   DATA SERVICES
 =================</span>
-					</pre>
-				</section>
-				  <section>
-						<pre><code>[GET] http://mydomain.com/users</code></pre>
-						
-						<table>
-							<thead>
-								<tr>
-									<th>id</th>
-									<th>firstname</th>
-									<th>lastname</th>
-									<th>...</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr><td>1</td><td>Lady</td><td>Gaga</td><td></td></tr>
-								<tr><td>2</td><td>Jozin</td><td>Z Bazin</td><td></td></tr>
-								<tr><td>3</td><td>Elon</td><td>Musk</td><td></td></tr>
-							</tbody>
-						</table>
-						<aside class="notes">
-							The approach doesn't represent data in the same way we think about data. We don't think about data in terms of tables and joins
-						</aside>
-						</section>
-	
+</pre>
+
+<pre class="sw-col">
+<span style="color:greenyellow">=================   ==========
+     BROWSER        NATIVE APP
+=================   ==========</span>
+
+       rest x graphql
+
+<span style="color:burlywood">=================
+    APP SERVER
+=================</span>
+
+<span style="color:lightcoral">=================
+  DATA SERVICES
+=================</span>
+</pre>
+					</div>	
+				</section>	
 					  <section>
 						  <svg viewbox="0 0 100 100">
 							<circle cx="20" cy="20" r="10" fill="#E10098" />
@@ -164,6 +240,9 @@
 								}
 								</code></pre>
 							</div>
+							<aside class="notes">
+								selection set
+							</aside>
 						</div>
 						<aside class="notes">
 							+ json like format<br>
@@ -242,20 +321,15 @@
 						</div>
 
 				  </section>
+
 				  <section>
-						<pre><code>[GET] http://mydomain.com/users?nickname=pikachu</code></pre>
-						<pre class="fragment"><code>[GET] http://mydomain.com/books/?user=2</code></pre>
-						<pre class="fragment"><code>[GET] http://mydomain.com/author/2</code></pre>
-						<br>
-						<pre class="fragment"><code>[GET] http://mydomain.com/books_with_author/?user=2</code></pre>
-						<pre class="fragment" style="font-size: 45%"><code>[GET] http://mydomain.com/books_with_author_and_bookcover/?user=2</code></pre>
-						<pre class="fragment" style="font-size: 35%"><code>[GET] http://mydomain.com/books_with_author_and_bookcover_and_author_photography/?user=2</code></pre>
-						<aside class="notes">
-							The approach doesn't represent data in the same way we think about data. We don't think about data in terms of tables and joins
-						</aside>
-						</section>
-				  <section>
-					
+					Schema Query
+					Decoupeling srv model from client obj
+					Documentation
+					Versioning
+
+					Resolver
+					Mutation
 				  </section>
 				 
 
