@@ -15,6 +15,7 @@
       .reveal section h1, .reveal section h2 {
       text-transform: none;
       }
+      .reveal pre code { max-height: none; }
       .sw-row {
       display: flex;
       }
@@ -194,13 +195,18 @@
 				  <g class="fragment">
 					<line x1="27" y1="19" x2="70" y2="15" stroke="#E10098"/>
 					<circle cx="70" cy="15" r="10" fill="#E10098" />
-					<text x="61" y="17" font-size="6" fill="white">[books]</text>
+					<text x="64" y="17" font-size="6" fill="white">loans</text>
 				  </g>
 				  <g class="fragment">
-					<line x1="70" y1="18" x2="60" y2="45" stroke="#E10098"/>
-					<circle cx="60" cy="45" r="10" fill="#E10098" />
-					<text x="52" y="47" font-size="6" fill="white">author</text>
-				  </g>
+					<line x1="70" y1="18" x2="40" y2="45" stroke="#E10098"/>
+					<circle cx="40" cy="45" r="10" fill="#E10098" />
+					<text x="34" y="47" font-size="6" fill="white">book</text>
+          </g>
+          <g class="fragment">
+            <line x1="46" y1="45" x2="64" y2="52" stroke="#E10098"/>
+            <circle cx="70" cy="50" r="10" fill="#E10098" />
+            <text x="62" y="52" font-size="6" fill="white">author</text>
+          </g>
 				</svg>
 			  </section>
         <section>
@@ -210,11 +216,13 @@
 {
   <span class="fragment highlight-current-red">user</span>(nickname: "pikachu") {
     name
-    <span class="fragment highlight-current-red">books</span> {
-      title
-      pages
-      <span class="fragment highlight-current-red">author</span> {
-        name
+    <span class="fragment highlight-current-red">loans</span> {
+      <span class="fragment highlight-current-red">book</span> {
+        title
+        pages
+        <span class="fragment highlight-current-red">author</span> {
+          name
+        }
       }
     }
   }
@@ -225,11 +233,13 @@
   "data": {
     "user": {
       "name": "Jozin z Bazin",
-      "books": [{
-        "title": "The Theory of Everything",
-        "pages": 564,
-        "author": {
-          "name": "Stephen Hawking"
+      "loans": [{
+        "book": {
+          "title": "The Theory of Everything",
+          "pages": 564,
+          "author": {
+            "name": "Stephen Hawking"
+          }
         }
       }]
     }
@@ -244,20 +254,21 @@
         <section>
           <div class="sw-row">
           <pre class="sw-col"><code data-trim data-noescape>
-              type RootQuery {
-                user(nickname: String!): User
-                me: User
-              }
-
               type User {
                 id: ID!
                 name: String!
-                nickname: String
+                nickname: String!
                 age: Int
-                books: [Book]
+                loans: [Loan]
               }
+
+              type Loan {
+                book: Book!
+                date: Date!
+                returnDate: Date
+              } 
             </code></pre>
-          <pre class="sw-col"><code data-trim data-noescape>
+          <pre class="sw-col" style="line-height: 100%; font-size: 50%"><code data-trim data-noescape>
           type Book {
             id: ID!
             title: String
@@ -270,11 +281,17 @@
             name: String!
             books: [Book]
           }
-            </code></pre>
+
+          type RootQuery {
+            user(nickname: String!): User
+            me: User
+          }
+        </code></pre>
           </div>
         </section>
         <section>
           <h2>__schema / graphiql</h2>
+          https://graphql.github.io/swapi-graphql/
         </section>
         <section>
           <h2>More GraphQL features</h2>
@@ -371,6 +388,9 @@
                 </code></pre>
               </div>
             </section>
+            <section>
+              <h2>GraphQL is just a facade</h2>
+            </section>
         <section>
           <h2>What else?</h2>
           <ul>
@@ -378,7 +398,41 @@
             <li class="fragment">No more server model as response format</li>
             <li class="fragment">Versioning</li>
             <li class="fragment">Documentation</li>
+            <li class="fragment">Scalar types, enums, interfaces</li>
+            <li class="fragment">Dataloader - batching and caching</li>
           </ul>
+        </section>
+        <section>
+          <h2>Apollo & React</h2>
+        </section>
+        <section>
+            <pre style="font-size: 40%"><code data-trim data-noescape>
+              import React, { Component } from 'react'
+              import gql from 'graphql-tag'
+              import { graphql } from 'react-apollo';
+
+              const query = gql`
+                query MeQuery {
+                  me {
+                    nickname
+                  }
+                }
+              `
+
+              class Profile extends Component {
+                render() {
+                  const { loading, error, me } = this.props.data
+
+                  if (error) { return (...) }
+
+                  if (loading) { return (...) }
+
+                  return &lt;div&gt;{ me.nickname }&lt;/div&gt;
+                }
+              }
+
+              export default graphql(query)(Profile)
+            </code></pre>
         </section>
       </div>
     </div>
