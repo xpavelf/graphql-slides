@@ -53,6 +53,10 @@
         </section>
         <section>
           <h2>Rest API</h2>
+          <aside class="notes">
+            + graphql was influenced by rest api issues<br>
+            + let's look on small example with - it is small library management system    
+          </aside>
         </section>
         <section>
           <pre><code>[GET] http://mydomain.com/users</code></pre>
@@ -70,7 +74,13 @@
 								"loans": "http://mydomain.com/users/2/loans",
 								...
 							}, ...]
-						</code></pre>
+            </code></pre>
+            <aside class="notes">
+                + based on http, use verb (method) and endpoint url<br>
+                + we didn't spec what data we want we just got whole resource<br>
+                + hypermedia that navigates us where to get more information<br>
+                + if we want informations about all borrowed books and their authors we need to go and ask server for more info 
+              </aside>
         </section>
         <section>
           <pre><code>[GET] http://mydomain.com/users/2/loans</code></pre>
@@ -118,13 +128,19 @@
         </section>
         <section>
           <h2>Rest is optimized for servers, not for clients</h2>
+          <aside class="notes">
+            + rest is providing us generic way how to access entities from resource<br>
+            + that is very powerful way and that's why is rest so popular<br>
+            + but it does that in different mental approach 
+          </aside>
         </section>
         <section>
           <pre><code>[GET] http://mydomain.com/books_with_comments/?book=1</code></pre>
           <pre class="fragment" style="font-size: 45%"><code>[GET] http://mydomain.com/books_with_comments_and_bookcover/?book=1</code></pre>
           <pre class="fragment" style="font-size: 35%"><code>[GET] http://mydomain.com/books_with_comments_and_bookcover_and_author_photography/?book=1</code></pre>
           <aside class="notes">
-            Server is defining the model of what we get.
+            + some issues that rises when we need to serve more different consumers<br>
+            + so that's the world where graphql comes in
           </aside>
         </section>
         <section>
@@ -134,12 +150,34 @@
           <h2>Query language</h2>
           "A specialized language for requesting information from a data resource."
           <aside class="notes">
-            by creating graphql, fb was trying to retrieve data in more natural manner
-            + Another query language?? -> SQL
-            + SQL we think of data in tables and joins so that is also how we construct our queries
-            + GraphQL we think in terms of nodes and connection among them
-          </aside>
+              Q: anyone know other query language<br><br>
+              more natural approach to access data by navigating through the graph of data reather joining tables
+            </aside>
         </section>
+        <section>
+            <svg viewbox="0 0 100 100">
+              <circle cx="20" cy="20" r="10" fill="#E10098" />
+              <text x="14" y="22" font-size="6" fill="white">user</text>
+              <g class="fragment">
+              <line x1="27" y1="19" x2="70" y2="15" stroke="#E10098"/>
+              <circle cx="70" cy="15" r="10" fill="#E10098" />
+              <text x="64" y="17" font-size="6" fill="white">loans</text>
+              </g>
+              <g class="fragment">
+              <line x1="70" y1="18" x2="40" y2="45" stroke="#E10098"/>
+              <circle cx="40" cy="45" r="10" fill="#E10098" />
+              <text x="34" y="47" font-size="6" fill="white">book</text>
+              </g>
+              <g class="fragment">
+                <line x1="46" y1="45" x2="64" y2="52" stroke="#E10098"/>
+                <circle cx="70" cy="50" r="10" fill="#E10098" />
+                <text x="62" y="52" font-size="6" fill="white">author</text>
+              </g>
+            </svg>
+            </section>
+            <aside class="notes">
+              One thing we shouldn't forget is that it is still just a language, it dosn't say anything about storing data
+            </aside>
         <section>
           <h2>GraphQL is NOT a storage engine!</h2>
         </section>
@@ -172,11 +210,9 @@
 }
 								</code></pre>
             </div>
-            <aside class="notes">
-              selection set
-            </aside>
           </div>
           <aside class="notes">
+            + selection set<br>
             + json like format<br>
             + fields, nested fields<br>
             + Easy to know what the response structure gonna be<br>
@@ -188,27 +224,7 @@
 		<section>
 		  <pre><code>[POST] http://mydomain.com/graphql</code></pre>
 		</section>
-		<section>
-				<svg viewbox="0 0 100 100">
-				  <circle cx="20" cy="20" r="10" fill="#E10098" />
-				  <text x="14" y="22" font-size="6" fill="white">user</text>
-				  <g class="fragment">
-					<line x1="27" y1="19" x2="70" y2="15" stroke="#E10098"/>
-					<circle cx="70" cy="15" r="10" fill="#E10098" />
-					<text x="64" y="17" font-size="6" fill="white">loans</text>
-				  </g>
-				  <g class="fragment">
-					<line x1="70" y1="18" x2="40" y2="45" stroke="#E10098"/>
-					<circle cx="40" cy="45" r="10" fill="#E10098" />
-					<text x="34" y="47" font-size="6" fill="white">book</text>
-          </g>
-          <g class="fragment">
-            <line x1="46" y1="45" x2="64" y2="52" stroke="#E10098"/>
-            <circle cx="70" cy="50" r="10" fill="#E10098" />
-            <text x="62" y="52" font-size="6" fill="white">author</text>
-          </g>
-				</svg>
-			  </section>
+
         <section>
           <pre><code>[POST] http://mydomain.com/graphql</code></pre>
           <div class="sw-row">
@@ -339,6 +355,53 @@
             </div>
         </section>
         <section>
+          <div class="sw-row">
+              <ul class="sw-col">
+                  <li>Scalar type
+                    <pre><code data-trim>
+                      Int
+                      Float
+                      String
+                      Boolean
+                      ID
+                    </code></pre>
+                  </li>
+                  <li>Enums
+                      <pre><code data-trim data-noescape>
+                        enum BookCover {
+                          HARDCOVER,
+                          PAPERBACK
+                        }
+                      </code></pre>
+                  </li>
+                  <li>Input type</li>
+                </ul>
+                <ul class="sw-col">
+                  <li>Union type
+                      <pre><code>union Press = Book | Magazine | Newspaper</code></pre>
+                  </li>
+                  <li>Interfaces
+                      <pre><code data-trim data-noescape>
+                      interface Character {
+                        id: ID!
+                        name: String!
+                        friends: [Character]
+                        appearsIn: [Book]!
+                      }
+
+                      type Human implements Character { 
+                        ...
+                      }
+                      type Droid implements Character { 
+                        ...
+                      }
+                      </code></pre>
+                  </li>
+                </ul>
+          </div>
+          
+        </section>
+        <section>
           <h2>How it actually works?</h2>
           Type definition & Resolver
         </section>
@@ -398,7 +461,6 @@
             <li class="fragment">No more server model as response format</li>
             <li class="fragment">Versioning</li>
             <li class="fragment">Documentation</li>
-            <li class="fragment">Scalar types, enums, interfaces</li>
             <li class="fragment">Dataloader - batching and caching</li>
           </ul>
         </section>
@@ -409,7 +471,7 @@
             <pre style="font-size: 40%"><code data-trim data-noescape>
               import React, { Component } from 'react'
               import gql from 'graphql-tag'
-              import { graphql } from 'react-apollo';
+              import { graphql } from 'react-apollo'
 
               const query = gql`
                 query MeQuery {
@@ -433,6 +495,22 @@
 
               export default graphql(query)(Profile)
             </code></pre>
+        </section>
+        <section>
+          <h2>ApolloProvider</h2>
+          <pre style="font-size: 40%"><code data-trim data-noescape>
+              &lt;div class="root">
+                &lt;ApolloProvider client={clinet}>
+                  &lt;App />
+                &lt;/ApolloProvider>
+              &lt;/div>
+          </code></pre>
+          <aside class="notes">
+            + if you know redux, this will be very familiar to you<br>
+            + graphql endpoint<br>
+            + headers<br>
+            + client has in memmory cache (no more redux)
+          </aside>
         </section>
       </div>
     </div>
