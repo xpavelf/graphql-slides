@@ -45,12 +45,26 @@
           <img 
             src="./imgs/gh-logo.png"
             style="height: 1em; vertical-align: middle"
-            > / xpavelf
+            > / xpavelf<br><span style="color:darkolivegreen">GraphQL, Apollo, React</span>
+          
+          <br><br>
+          <img 
+            src="./imgs/gh-logo.png"
+            style="height: 1em; vertical-align: middle"
+            > / lurtt<br><span style="color:darkolivegreen">yoga, prisma</span>
           <br>
+
+
+
           <img 
             src="./imgs/solarwinds-logo.png"
             style="height: 5em;">
         </section>
+        <section>
+            <h2>GraphQL</h2>
+            <p class="fragment">query language created by Facebook in 2012</p>
+            <p class="fragment">developing as a open standard since 2015</p>
+          </section>
         <section>
           <h2>Rest API</h2>
           <aside class="notes">
@@ -182,11 +196,6 @@
           <h2>GraphQL is NOT a storage engine!</h2>
         </section>
         <section>
-          <h2>GraphQL</h2>
-          <p class="fragment">query language created by Facebook in 2012</p>
-          <p class="fragment">developing as a open standard since 2015</p>
-        </section>
-        <section>
           <div class="sw-row">
             <div class="sw-col">
               Request
@@ -232,6 +241,7 @@
 {
   <span class="fragment highlight-current-red">user</span>(nickname: "pikachu") {
     name
+    nickname
     <span class="fragment highlight-current-red">loans</span> {
       <span class="fragment highlight-current-red">book</span> {
         title
@@ -244,11 +254,12 @@
   }
 }
 			</code></pre>
-            <pre class="sw-col fragment" style="font-size: 40%"><code data-trim data-noescape>
+            <pre class="sw-col fragment" style="font-size: 48%"><code data-trim data-noescape>
 {
   "data": {
     "user": {
       "name": "Jozin z Bazin",
+      "nickname": "pikachu",
       "loans": [{
         "book": {
           "title": "The Theory of Everything",
@@ -284,7 +295,7 @@
                 returnDate: Date
               } 
             </code></pre>
-          <pre class="sw-col" style="line-height: 100%; font-size: 50%"><code data-trim data-noescape>
+          <pre class="sw-col"><code data-trim data-noescape>
           type Book {
             id: ID!
             title: String
@@ -306,8 +317,14 @@
           </div>
         </section>
         <section>
-          <h2>__schema / graphiql</h2>
-          https://graphql.github.io/swapi-graphql/
+          <h2>{ __schema }</h2>
+        </section>
+        <section>
+          <h2>graph<i style="color: coral">i</i>ql</h2>
+          tool that presents __schema in GUI<br><br>
+          <a target="_blank" href="https://graphql.github.io/swapi-graphql/">
+            https://graphql.github.io/swapi-graphql/
+          </a>
         </section>
         <section>
           <h2>More GraphQL features</h2>
@@ -402,19 +419,20 @@
           
         </section>
         <section>
-          <h2>How it actually works?</h2>
+          <h2>How it actually works?<div style="font-size: 60%; color: lightslategray">(server)</div></h2>
+          
           Type definition & Resolver
         </section>
 
         <section>
             <div class="sw-row">
-            <pre class="sw-col"><code data-trim data-noescape>
+            <pre class="sw-col">// Schema definition<code data-trim data-noescape>
                 type RootQuery {
                   user(nickname: String!): User
                   me: User
                 }
               </code></pre>
-            <pre class="sw-col"><code data-trim data-noescape>
+            <pre class="sw-col">// Resolver (js/apollo)<code data-trim data-noescape>
                 {
                   RootQuery: {
                     user: (nickname) => {
@@ -445,6 +463,14 @@
               {
                 User: { 
                   id: (usr) => usr.id,
+
+                  name: (usr) => [
+                    usr.firstname,
+                    usr.lastname
+                  ].join(' '),
+
+                  age: (usr) => usr.age,
+
                   ...
                 }
               }
@@ -461,7 +487,6 @@
             <li class="fragment">No more server model as response format</li>
             <li class="fragment">Versioning</li>
             <li class="fragment">Documentation</li>
-            <li class="fragment">Dataloader - batching and caching</li>
           </ul>
         </section>
         <section>
@@ -500,7 +525,7 @@
           <h2>ApolloProvider</h2>
           <pre style="font-size: 40%"><code data-trim data-noescape>
               &lt;div class="root">
-                &lt;ApolloProvider client={clinet}>
+                &lt;ApolloProvider client={client}>
                   &lt;App />
                 &lt;/ApolloProvider>
               &lt;/div>
@@ -522,6 +547,8 @@
       // - https://github.com/hakimel/reveal.js#dependencies
       Reveal.initialize({
       	history: true,
+        width: 1100,
+	      height: 800,
       	dependencies: [
       		{ src: 'plugin/markdown/marked.js' },
       		{ src: 'plugin/markdown/markdown.js' },
